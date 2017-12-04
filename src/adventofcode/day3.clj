@@ -24,11 +24,11 @@
   (let [matrix {[0 0] 1}
         start  [0 0]]
 	(->> (reductions (fn [[coord value matrix] current-step] 
-	                (let [next-coord (mapv + coord current-step)
-					      [value next-matrix] (update-matrix matrix next-coord)]
-				      [next-coord value next-matrix]))
-				[start 1 matrix]
-			    (steps))
+				 (let [next-coord (mapv + coord current-step)
+				       [value next-matrix] (update-matrix matrix next-coord)]
+					 [next-coord value next-matrix]))
+			 [start 1 matrix]
+			 (steps))
        (drop-while (fn [[_ value _]] (<= value input)))
        first
        second)))

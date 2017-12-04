@@ -17,8 +17,8 @@
   (let [[x y] current
         value (reduce +
                       (remove nil? (for [x1 (range -1 2) y1 (range -1 2)]
-                                     (get-in matrix [(+ x x1) (+ y y1)]))))]
-    [value (assoc-in matrix current value)]))
+                                     (get matrix [(+ x x1) (+ y y1)]))))]
+    [value (assoc matrix current value)]))
 
 (defn solve-2 [input]
   (let [matrix {[0 0] 1}

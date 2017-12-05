@@ -6,9 +6,6 @@
 (defn example-part1 []
   (clojure.java.io/reader (clojure.java.io/resource "day5/example-part1")))
 
-(defn example-part2 []
-  (clojure.java.io/reader (clojure.java.io/resource "day5/example-part2")))
-
 (defn str->number [str]
   (Integer/parseInt str))
 

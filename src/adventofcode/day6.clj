@@ -15,8 +15,7 @@
         overlay (into [] (map + overlay (concat
                                          (repeat (mod amount size) 1)
                                          (repeat 0))))
-        overlay (into [] (take size (drop (- size start-at) (cycle overlay))))
-        ]
+        overlay (into [] (take size (drop (- size start-at) (cycle overlay))))]
     overlay))
 
 ;; (create-overlay 4 2 7)
@@ -41,14 +40,12 @@
              (conj seen current)
              (inc steps)))))
 
-
-
 (defn solve-1 [input]
   (let [[_ steps] (solve input)]
     steps))
 
 (defn solve-2 [input]
-  (let [[result _ ] (solve input)
+  (let [[result _] (solve input)
         [_ steps]   (solve result)]
     steps))
 

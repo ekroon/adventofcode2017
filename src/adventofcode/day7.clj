@@ -18,15 +18,6 @@
    (update-in structure [(:name list-item)] merge list-item)
    (:supporting list-item)))
 
-(defn update-total-weight [structure list-item]
-  (let [weights (map (fn [k] (get-in structure [k :total-weight]))
-                     (:supporting (get structure list-item)))]
-    (-> structure
-        (update-in [list-item]
-                   assoc :total-weight (+ (get-in structure [list-item :weight])
-                                          (reduce + weights)))
-        (update-in [list-item] assoc :weights weights))))
-
 (defn parse-structure [reader]
   (let [lines (map str->map (line-seq reader))]
     (reduce update-supported-by {} lines)))
@@ -35,6 +26,15 @@
   (let [structure (parse-structure reader)]
     (-> (filter (fn [[k v]] (not (:supported-by v))) structure)
         first first)))
+
+(defn update-total-weight [structure list-item]
+  (let [weights (map (fn [k] (get-in structure [k :total-weight]))
+                     (:supporting (get structure list-item)))]
+    (-> structure
+        (update-in [list-item]
+                   assoc :total-weight (+ (get-in structure [list-item :weight])
+                                          (reduce + weights)))
+        (update-in [list-item] assoc :weights weights))))
 
 (defn unequal-col [col]
   (if (empty? col)

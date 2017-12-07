@@ -14,7 +14,7 @@
 
 (defn update-supported-by [structure list-item]
   (reduce
-   (fn [r v] (update-in r [v :supported-by] conj (:name list-item)))
+   (fn [r v] (assoc-in r [v :supported-by] (:name list-item)))
    (update-in structure [(:name list-item)] merge list-item)
    (:supporting list-item)))
 
@@ -33,7 +33,7 @@
 
 (defn solve-1 [reader]
   (let [structure (parse-structure reader)]
-    (-> (filter (fn [[k v]] (empty? (:supported-by v))) structure)
+    (-> (filter (fn [[k v]] (not (:supported-by v))) structure)
         first first)))
 
 (defn unequal-col [col]

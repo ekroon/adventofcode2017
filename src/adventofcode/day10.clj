@@ -4,34 +4,36 @@
 (def input
   (-> "day10/input" clojure.java.io/resource slurp))
 
-(def make-indexes
-  (memoize
-   (fn [size position input]
-     (as-> (cycle (range size)) $
-       (drop position $)
-       (take size (concat (reverse (take input $)) (drop input $)))
-       (drop (- size position) (cycle $))
-       (take size $)))))
+(defn reverse-first-n [n col]
+  (let [[b e] (split-at n col)]
+    (concat (reverse b) e)))
 
-(defn rearrange-list [list indexes]
-  (mapv (fn [i] (nth list i)) indexes))
+(defn rotate [n col]
+  (let [[b e] (split-at n col)]
+    (concat e b)))
 
 (defn solve [parse-fn result-fn size input rounds]
   (let [input     (mapcat identity (repeat rounds (parse-fn input)))
         skip-list (range)]
-    (result-fn
-     (reduce
-      (fn [{:keys [list position]}
-           [skip input prev-input]]
-        (let [clist (cycle list)]
-          {:list     (rearrange-list list (make-indexes size position input))
-           :position (mod (+ position skip input) size)}))
-      {:list     (range size)
-       :position 0}
-      (map #(vector %1 %2 %3)
-           (range)
-           input
-           (concat [0] input))))))
+    (let [rotated-result
+          (reduce
+           (fn [{:keys [list position]}
+                [skip input prev-input]]
+             (let [clist list]
+               {:list     (->> list
+                               (reverse-first-n input)
+                               (rotate (mod (+ input skip) size)))
+                :position (mod (+ position skip input) size)}))
+           {:list     (range size)
+            :position 0}
+           (map #(vector %1 %2 %3)
+                (range)
+                input
+                (concat [0] input)))]
+      (result-fn
+       (update rotated-result
+               :list
+               #(rotate (- size (:position rotated-result)) %))))))
 
 (defn parse-1 [str1]
   (map read-string (str/split str1 #",")))

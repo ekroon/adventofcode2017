@@ -22,5 +22,5 @@
                  coords))))
          
 (defn -main [& args]
-  (println "part1: " (solve-1 input))
-  (println "part2: " (solve-2 input)))
+  (println "part1: " (solve-1))
+  (println "part2: " (solve-2)))

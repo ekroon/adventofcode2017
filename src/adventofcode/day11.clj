@@ -15,13 +15,13 @@
 
 (defn solve-1 []
   (let [[x y] (reduce #(mapv + %1 (directions %2)) [0 0] input)]
-    (+ ^int (Math/abs ^int x) ^int (/ (- (Math/abs ^int y) (Math/abs ^int x)) 2))))
+    (+ ^int (Math/abs ^int x) (max 0 ^int (/ (- (Math/abs ^int y) (Math/abs ^int x)) 2)))))
 
 (defn solve-2 []
   (let [coords (reductions #(mapv + %1 (directions %2)) [0 0] input)]
     (apply max (map
                 (fn [[x y]] (+ ^int (Math/abs ^int x)
-                               ^int (/ (- (Math/abs ^int y) (Math/abs ^int x)) 2)))
+                               (max 0 ^int (/ (- (Math/abs ^int y) (Math/abs ^int x)) 2))))
                 coords))))
 
 (defn -main [& args]

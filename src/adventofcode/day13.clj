@@ -16,30 +16,23 @@
   (reduce (fn [r line] (let [[k v] (parse-line line)]
                          (conj r [k v]))) [] lines))
 
-(defn scanner-position [d r]
-  ((fn [d r]
-     (let [period (concat (range r)
-                          (range (dec ^int r) 1 -1))]
-       (->> (cycle period)
-            (drop d)
-            first)))
-   (mod d (+ ^int r (max 0 (- ^int r 2)))) r))
+(defn caught-position [d r]
+  (= 0 (mod d (- (* 2 ^int r) 2))))
 
 (defn solve-1 [input]
   (let [parsed (parse-lines input)
-        mapped (map (fn [[d r]] (if (= 0 (scanner-position
-                                          d r))
+        mapped (map (fn [[d r]] (if (caught-position d r)
                                   (* ^int d ^int r)
                                   0)) parsed)]
     (reduce + mapped)))
 
 (defn caught [parsed delay]
   (reduce
-   (fn [_ [d r]]
-     (if (= 0 (scanner-position (+ ^int d ^int delay) r))
-       (reduced true)
-       false))
-   false parsed))
+    (fn [_ [d r]]
+      (if (caught-position (+ ^int d ^int delay) r)
+        (reduced true)
+        false))
+    false parsed))
 
 (defn solve-2 [input]
   (let [parsed (parse-lines input)]

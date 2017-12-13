@@ -17,7 +17,7 @@
                          (conj r [k v]))) [] lines))
 
 (defn caught-position [d r]
-  (= 0 (mod d (- (* 2 ^int r) 2))))
+  (zero? ^int (mod d (- (* 2 ^int r) 2))))
 
 (defn solve-1 [input]
   (let [parsed (parse-lines input)
@@ -36,11 +36,9 @@
 
 (defn solve-2 [input]
   (let [parsed (parse-lines input)]
-    (first (drop-while #(= :caught %)
-                       (map (fn [d] (if-not (caught parsed d)
-                                      d
-                                      :caught))
-                            (range 1000000000))))))
+    (some (fn [d] (when-not (caught parsed d)
+                    d))
+          (range))))
 
 (defn -main [& args]
   (time (println "part1:" (solve-1 input)))

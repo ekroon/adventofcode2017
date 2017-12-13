@@ -34,11 +34,19 @@
         false))
     false parsed))
 
+(defn make-caught-fn [parsed]
+  (->> (map
+        (fn [[d r]] (fn [^long delay] (zero? ^int (mod (+ ^int d delay) (- (* 2 ^int r) 2)))))
+        parsed)
+       (apply some-fn)))
+
 (defn solve-2 [input]
-  (let [parsed (parse-lines input)]
-    (some (fn [d] (when-not (caught parsed d)
-                    d))
-          (range))))
+  (let [parsed  (sort-by second (parse-lines input))
+        caught* (make-caught-fn parsed)
+        caught  (partial caught parsed)]
+    (->> (range)
+         (drop-while #(caught* %))
+         first)))
 
 (defn -main [& args]
   (time (println "part1:" (solve-1 input)))

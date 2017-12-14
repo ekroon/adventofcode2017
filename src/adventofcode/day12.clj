@@ -40,7 +40,7 @@
 (defn solve-1 [node-map]
   (-> (solve node-map 0) vals count))
 
-(defn solve-2 [node-map & [from to]]
+(defn solve-2 [node-map]
   (let [result (reduce (fn [r v]
                          (if (or ((:seen r) v) (nil? (get node-map v)))
                            r
@@ -52,9 +52,7 @@
                              new)))
                        {:seen   #{}
                         :groups 0}
-                       (if (and from to)
-                         (range from to)
-                         (range (count (keys node-map)))))]
+                       (keys node-map))]
     (:groups result)))
 
 (defn -main [& args]

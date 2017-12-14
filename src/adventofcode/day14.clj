@@ -51,7 +51,7 @@
                                                                 (inc (+ (* x size) y))))
                                                  (get-around row col))))]))))))
 
-    (def part2 (time (solve-2 (make-node-map binary-vecs) 1 (inc (* 128 128)))))
+    (def part2 (time (solve-2 (make-node-map binary-vecs))))
 
     (println "part2:" part2)))
 

@@ -42,7 +42,7 @@
 
 (defn solve-2 [node-map]
   (let [result (reduce (fn [r v]
-                         (if (or ((:seen r) v) (nil? (get node-map v)))
+                         (if ((:seen r) v)
                            r
                            (let [new
                                  (-> r

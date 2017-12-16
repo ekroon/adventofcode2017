@@ -59,7 +59,7 @@
 
 (defn solve-1 [input]
   (let [matches (re-seq regex input)]
-    (dance (map parse-move input) (start-positions))))
+    (dance (map parse-move matches) (start-positions))))
 
 (defn solve-2 [input]
   (let [matches      (re-seq regex input)

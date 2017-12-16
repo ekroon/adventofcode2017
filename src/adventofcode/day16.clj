@@ -3,8 +3,8 @@
             [clojure.set :as cs]
             [clojure.string :as str]))
 
-(set! *warn-on-reflection* true)
-(set! *unchecked-math* :warn-on-boxed)
+;; (set! *warn-on-reflection* true)
+;; (set! *unchecked-math* :warn-on-boxed)
 
 (def input (-> "day16/input" io/resource slurp))
 
@@ -65,16 +65,24 @@
   (let [matches      (re-seq regex input)
         parsed-moves (mapv parse-move matches)]
     (:positions
-     (reduce (fn [{:keys [positions lookup]} _]
-               (let [lookup-value  (get lookup positions)]
+     (reduce (fn [{:keys [positions lookup seen-at]} i]
+               (let [lookup-value (get lookup positions)]
                  (if lookup-value
-                   {:positions lookup-value
-                    :lookup lookup}
+                   (if (and (get seen-at positions)
+                            (= 0
+                               (mod (- 1000000000 ^int i)
+                                    (- ^int i ^int (get seen-at positions)))))
+                     (reduced {:positions positions})
+                     {:positions lookup-value
+                      :lookup lookup
+                      :seen-at (assoc seen-at positions i)})
                    (let [new-positions (dance parsed-moves positions)]
                      {:positions new-positions
-                      :lookup    (assoc lookup positions new-positions)}))))
+                      :lookup    (assoc lookup positions new-positions)
+                      :seen-at   (assoc seen-at positions i)}))))
              {:positions (start-positions)
-              :lookup    {}}
+              :lookup    {}
+              :seen-at   {}}
              (range 1000000000)))))
 
 (defn -main [& args]

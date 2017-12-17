@@ -21,7 +21,7 @@
         {:result (if (= 1 next-position) v result)
          :current-position next-position}))
     {:result 0
-     :current-position 1}
+     :current-position 0}
     (range 1 (inc steps)))))
 
 (defn -main [& args]

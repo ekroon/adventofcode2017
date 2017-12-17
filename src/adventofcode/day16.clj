@@ -68,10 +68,9 @@
      (reduce (fn [{:keys [positions lookup seen-at]} i]
                (let [lookup-value (get lookup positions)]
                  (if lookup-value
-                   (if (and (get seen-at positions)
-                            (= 0
-                               (mod (- 1000000000 ^int i)
-                                    (- ^int i ^int (get seen-at positions)))))
+                   (if (= 0
+                          (mod (- 1000000000 ^int i)
+                               (- ^int i ^int (get seen-at positions))))
                      (reduced {:positions positions})
                      {:positions lookup-value
                       :lookup lookup

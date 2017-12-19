@@ -43,15 +43,11 @@
   (let [current-char (char-at grid current-position)]
     (cond
       (#{:up :down} current-direction)
-      (some identity
-            (map (partial direction-filter grid current-position)
-                 [:left
-                  :right]))
+      ((some-fn (partial direction-filter grid current-position))
+       :left :right)
       (#{:left :right} current-direction)
-      (some identity
-            (map (partial direction-filter grid current-position)
-                 [:up
-                  :down]))
+      ((some-fn (partial direction-filter grid current-position))
+       :up :down)
       :else (assert false))))
 
 (defn next-position-and-direction [grid current-position current-direction]

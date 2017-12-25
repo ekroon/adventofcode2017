@@ -8,7 +8,7 @@
 
 (deftask run
   "Run the project."
-  [d day INT int "day to run"]
+  [d day STR str "day to run"]
   (require (read-string (format "[adventofcode.day%s :as app]" day)))
   (apply (resolve 'app/-main) []))
 
